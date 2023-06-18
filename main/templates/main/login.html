@@ -5,6 +5,12 @@
     <title>Title</title>
 </head>
 <body>
+<h1>Welcome back. Please log in.</h1>
+<form action="{% url 'main:profile' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Log in">
+</form>
 
 </body>
 </html>

@@ -1,17 +1,46 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 
 
 # Create your views here.
 def index(request):
     return render(request, 'main/index.html', {})
 
+
 def login_user(request):
-    return HttpResponse("login page")
+    auth_form = AuthenticationForm()
+    return render(request, 'main/login.html', {'form': auth_form})
+
 
 def signup_user(request):
     return HttpResponse("sign up page")
 
+
+def logout_user(request):
+    logout(request)
+    return redirect('index')
+
+
 def about(reqeust):
     return HttpResponse("about us page")
+
+
+def profile(request):
+    if request.user.is_authenticated:
+        return render(request, 'main/profile.html', {})
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return render(request, 'main/profile.html', {})
+
+        else:
+            return HttpResponse("login failed")
 

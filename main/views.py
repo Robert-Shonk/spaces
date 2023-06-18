@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 
 # Create your views here.
@@ -15,12 +15,13 @@ def login_user(request):
 
 
 def signup_user(request):
-    return HttpResponse("sign up page")
+    signup_form = UserCreationForm()
+    return render(request, 'main/signup.html', {'form': signup_form})
 
 
 def logout_user(request):
     logout(request)
-    return redirect('index')
+    return redirect('/')
 
 
 def about(reqeust):

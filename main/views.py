@@ -32,7 +32,6 @@ def login_user(request):
 
 
 def signup_user(request):
-    #signup_form = CreateUserForm()
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)

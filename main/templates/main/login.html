@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Welcome back. Please log in.</h1>
-<form action="{% url 'main:profile' %}" method="POST">
+<form method="POST">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Log in">

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .forms import CreateUserForm
 
 
 # Create your views here.
@@ -10,13 +11,37 @@ def index(request):
 
 
 def login_user(request):
-    auth_form = AuthenticationForm()
-    return render(request, 'main/login.html', {'form': auth_form})
+
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('main:profile')
+
+        else:
+            return HttpResponse("incorrect info")
+
+    form = AuthenticationForm()
+    return render(request, 'main/login.html', {'form': form})
 
 
 def signup_user(request):
-    signup_form = UserCreationForm()
-    return render(request, 'main/signup.html', {'form': signup_form})
+    #signup_form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:login_user')
+
+    form = CreateUserForm()
+    return render(request, 'main/signup.html', {'form': form})
 
 
 def logout_user(request):
@@ -29,19 +54,6 @@ def about(reqeust):
 
 
 def profile(request):
-    if request.user.is_authenticated:
-        return render(request, 'main/profile.html', {})
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return render(request, 'main/profile.html', {})
-
-        else:
-            return HttpResponse("login failed")
+    #if request.user.is_authenticated:
+    return render(request, 'main/profile.html', {})
 

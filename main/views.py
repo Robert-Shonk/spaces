@@ -57,3 +57,8 @@ def profile(request):
         username = request.user
         return render(request, 'main/profile.html', {'username': username})
 
+
+def create_space(request):
+    if request.user.is_authenticated:
+        return render(request, 'main/createspace.html', {})
+

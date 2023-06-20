@@ -3,9 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile page</title>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
-<h1>Hello, {{ username }}</h1>
-<a href="{% url 'main:logout_user' %}">Log out</a>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col">
+            <h1>Hello, {{ username }}</h1>
+
+        </div>
+        <div class="col">
+            <a href="{% url 'main:logout_user' %}">Log out</a>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            <a href="{% url 'main:create_space' %}">Create a space here!</a>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

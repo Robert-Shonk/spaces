@@ -7,9 +7,15 @@ class UserFollowedSpaces(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     spacename = models.CharField(max_length=25)
 
+    def __str__(self):
+        return self.spacename
+
 
 class Space(models.Model):
     spacename = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.spacename
 
 
 class Post(models.Model):
@@ -24,6 +30,9 @@ class Post(models.Model):
     funny = models.IntegerField(default=0)
     date_published = models.DateTimeField()
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -34,4 +43,16 @@ class Comment(models.Model):
     helpful = models.IntegerField(default=0)
     funny = models.IntegerField(default=0)
     date_published = models.DateTimeField()
+
+    def __str__(self):
+        return self.comment
+
+
+class Moderator(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    head_mod = models.BooleanField(default=False)
+    spacename = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.user.username
 

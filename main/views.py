@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CreateUserForm
+from django.contrib.auth.models import User
+from .forms import CreateUserForm, CreateSpaceForm
+from .models import Moderator, Space
 
 
 # Create your views here.
@@ -60,5 +62,22 @@ def profile(request):
 
 def create_space(request):
     if request.user.is_authenticated:
-        return render(request, 'main/createspace.html', {})
+
+        if request.method == 'POST':
+            form = CreateSpaceForm(request.POST)
+
+            if form.is_valid():
+                # if true add to space table and moderator table. also need to check if spacename exists already.
+                spacename = form.cleaned_data['spacename']
+                try:
+                    spaces = Space.objects.get(spacename=spacename)
+                except Space.DoesNotExist:
+                    new_space = Space(spacename=spacename)
+                    new_space.save()
+                    request.user.moderator_set.create(head_mod=True, spacename=spacename)
+                    return redirect('main:profile')
+
+        form = CreateSpaceForm()
+
+        return render(request, 'main/createspace.html', {'form': form})
 

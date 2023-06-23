@@ -11,5 +11,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('profile/', views.profile, name='profile'),
     path('createspace/', views.create_space, name='create_space'),
+    path('space/<str:spacename>/', views.space, name='space'),
 ]
 

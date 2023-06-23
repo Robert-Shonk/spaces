@@ -19,20 +19,23 @@
 
         </div>
         <div class="col">
-            <a href="{% url 'main:logout_user' %}">Log out</a>
+            <a href="{% url 'main:logout_user' %}">Log out</a>|
+            <a href="{% url 'main:create_space' %}">Create a space here!</a>
         </div>
 
     </div>
 
     <div class="row">
         <div class="col">
-
+            <h3>list of all spaces</h3>
+            <ul>
+                {% for spacename in spaces %}
+                    <li><a href="{% url 'main:space' spacename %}">{{ spacename }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="col">
-            <a href="{% url 'main:create_space' %}">Create a space here!</a>
-        </div>
-        <div class="col">
-
+            <h3>list of followed spaces</h3>
         </div>
     </div>
 </div>

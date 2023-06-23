@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 from .forms import CreateUserForm, CreateSpaceForm
-from .models import Moderator, Space
+from .models import Space
 
 
 # Create your views here.
@@ -57,7 +56,8 @@ def about(reqeust):
 def profile(request):
     if request.user.is_authenticated:
         username = request.user
-        return render(request, 'main/profile.html', {'username': username})
+        spaces = Space.objects.all()
+        return render(request, 'main/profile.html', {'username': username, 'spaces': spaces})
 
 
 def create_space(request):
@@ -80,4 +80,8 @@ def create_space(request):
         form = CreateSpaceForm()
 
         return render(request, 'main/createspace.html', {'form': form})
+
+
+def space(request, spacename):
+    return render(request, 'main/space.html', {'spacename': spacename})
 

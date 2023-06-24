@@ -100,7 +100,9 @@ def space(request, spacename):
 
         try:
             followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
-            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True'})
+            space_posts = Post.objects.filter(spacename=spacename)
+            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True',
+                                                       'space_posts': space_posts})
         except UserFollowedSpace.DoesNotExist:
             return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
 
@@ -114,8 +116,17 @@ def post(request, spacename):
         except Post.DoesNotExist:
             request.user.post_set.create(title=request.POST['title'], spacename=spacename,
                                          url=request.POST['url'], body=request.POST['body'])
-            return HttpResponse("Posted!")
+            return render(request, 'main/space.html', {'spacename': spacename})
 
     form = PostForm()
-    return render(request, 'main/post.html', {'form': form})
+    return render(request, 'main/post.html', {'form': form, 'spacename': spacename})
+
+
+def post_comments(request, spacename, post_title):
+
+    try:
+        post_info = Post.objects.get(title=post_title)
+        return render(request, 'main/comment.html', {'post': post_info})
+    except Post.DoesNotExist:
+        return HttpResponse("post comments")
 

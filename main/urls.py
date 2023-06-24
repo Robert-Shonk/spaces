@@ -13,5 +13,6 @@ urlpatterns = [
     path('createspace/', views.create_space, name='create_space'),
     path('space/<str:spacename>/', views.space, name='space'),
     path('space/<str:spacename>/post/', views.post, name='post'),
+    path('space/<str:spacename>/comments/<str:post_title>/', views.post_comments, name='post_comments'),
 ]
 

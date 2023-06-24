@@ -23,7 +23,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     spacename = models.CharField(max_length=25)
-    url = models.CharField(max_length=200, default="")
+    url = models.CharField(max_length=200, default="", blank=True)
     body = models.CharField(max_length=1000, default="")
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)

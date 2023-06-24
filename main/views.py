@@ -57,7 +57,8 @@ def profile(request):
     if request.user.is_authenticated:
         username = request.user
         spaces = Space.objects.all()
-        return render(request, 'main/profile.html', {'username': username, 'spaces': spaces})
+        followed_spaces = request.user.userfollowedspace_set.all()
+        return render(request, 'main/profile.html', {'username': username, 'spaces': spaces, 'followed_spaces': followed_spaces})
 
 
 def create_space(request):

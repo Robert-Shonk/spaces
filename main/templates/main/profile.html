@@ -36,6 +36,11 @@
         </div>
         <div class="col">
             <h3>list of followed spaces</h3>
+            <ul>
+                {% for spacename in followed_spaces %}
+                    <li><a href="{% url 'main:space' spacename %}">{{ spacename }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

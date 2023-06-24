@@ -18,7 +18,9 @@ class CreateSpaceForm(forms.Form):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'url', 'body']
+        fields = ['user', 'title', 'spacename', 'url', 'body']
         widgets = {
+            'user': forms.HiddenInput(),
+            'spacename': forms.HiddenInput(),
             'body': Textarea(attrs={'cols': 80, 'rows': 20})
         }

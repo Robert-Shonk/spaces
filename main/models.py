@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 
 # Create your models here.
@@ -28,7 +29,7 @@ class Post(models.Model):
     downvotes = models.IntegerField(default=0)
     helpful = models.IntegerField(default=0)
     funny = models.IntegerField(default=0)
-    date_published = models.DateTimeField()
+    date_published = models.DateTimeField(default=datetime.datetime.now(), blank=True)
 
     def __str__(self):
         return self.title

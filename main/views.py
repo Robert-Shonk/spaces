@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CreateUserForm, CreateSpaceForm, PostForm
-from .models import Space, UserFollowedSpace
+from .models import Space, UserFollowedSpace, Post
+import datetime
 
 
 # Create your views here.
@@ -105,6 +106,16 @@ def space(request, spacename):
 
 
 def post(request, spacename):
+
+    if request.method == 'POST':
+
+        try:
+            post_exists = request.user.post_set.get(title=request.POST['title'])
+        except Post.DoesNotExist:
+            request.user.post_set.create(title=request.POST['title'], spacename=spacename,
+                                         url=request.POST['url'], body=request.POST['body'])
+            return HttpResponse("Posted!")
+
     form = PostForm()
     return render(request, 'main/post.html', {'form': form})
 

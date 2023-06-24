@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Space)
-admin.site.register(UserFollowedSpaces)
+admin.site.register(UserFollowedSpace)
 admin.site.register(Post)
 admin.site.register(Comment)
 admin.site.register(Moderator)

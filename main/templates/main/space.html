@@ -9,5 +9,19 @@
 </head>
 <body>
 <h1>{{ spacename }}</h1>
+
+{% if followed == 'True' %}
+    <form method="POST" action="{% url 'main:space' spacename %}">
+        {% csrf_token %}
+        <input type="hidden" name="followed" value="False">
+        <input type="submit" value="Unfollow">
+    </form>
+{% else %}
+    <form method="POST" action="{% url 'main:space' spacename %}">
+        {% csrf_token %}
+        <input type="hidden" name="followed" value="True">
+        <input type="submit" value="Follow">
+    </form>
+{% endif %}
 </body>
 </html>

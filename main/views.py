@@ -82,6 +82,13 @@ def create_space(request):
         return render(request, 'main/createspace.html', {'form': form})
 
 
+# still Need to update UserFollowedSpace
 def space(request, spacename):
-    return render(request, 'main/space.html', {'spacename': spacename})
+
+    if request.method == 'POST':
+        followed = request.POST['followed']
+    else:
+        followed = 'False'
+
+    return render(request, 'main/space.html', {'spacename': spacename, 'followed': followed})
 

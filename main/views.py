@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CreateUserForm, CreateSpaceForm
-from .models import Space
+from .models import Space, UserFollowedSpace
 
 
 # Create your views here.
@@ -86,9 +86,19 @@ def create_space(request):
 def space(request, spacename):
 
     if request.method == 'POST':
-        followed = request.POST['followed']
-    else:
-        followed = 'False'
 
-    return render(request, 'main/space.html', {'spacename': spacename, 'followed': followed})
+        try:
+            followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
+            followed_space.delete()
+            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
+        except UserFollowedSpace.DoesNotExist:
+            request.user.userfollowedspace_set.create(spacename=spacename)
+            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True'})
+    else:
+
+        try:
+            followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
+            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True'})
+        except UserFollowedSpace.DoesNotExist:
+            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
 

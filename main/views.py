@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CreateUserForm, CreateSpaceForm
+from .forms import CreateUserForm, CreateSpaceForm, PostForm
 from .models import Space, UserFollowedSpace
 
 
@@ -102,4 +102,9 @@ def space(request, spacename):
             return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True'})
         except UserFollowedSpace.DoesNotExist:
             return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
+
+
+def post(request, spacename):
+    form = PostForm()
+    return render(request, 'main/post.html', {'form': form})
 

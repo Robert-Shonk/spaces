@@ -38,12 +38,13 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.CharField(max_length=1000)
+    parent_comment = models.CharField(max_length=1000, default="", blank=True)
     username = models.CharField(max_length=12)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
     helpful = models.IntegerField(default=0)
     funny = models.IntegerField(default=0)
-    date_published = models.DateTimeField()
+    date_published = models.DateTimeField(default=datetime.datetime.now(), blank=True)
 
     def __str__(self):
         return self.comment

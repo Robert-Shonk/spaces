@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CreateUserForm, CreateSpaceForm, PostForm
-from .models import Space, UserFollowedSpace, Post
+from .forms import CreateUserForm, CreateSpaceForm, PostForm, CommentForm
+from .models import Space, UserFollowedSpace, Post, Comment
 import datetime
 
 
@@ -124,9 +124,24 @@ def post(request, spacename):
 
 def post_comments(request, spacename, post_title):
 
-    try:
-        post_info = Post.objects.get(title=post_title)
-        return render(request, 'main/comment.html', {'post': post_info})
-    except Post.DoesNotExist:
-        return HttpResponse("post comments")
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            post_info = Post.objects.get(title=post_title)
+            comments = post_info.comment_set.all()
+
+            comment_form = CommentForm()
+
+            return render(request, 'main/comment.html',
+                          {'post_info': post_info, 'comments': comments, 'comment_form': comment_form})
+
+    post_info = Post.objects.get(title=post_title)
+    comments = post_info.comment_set.all()
+
+    comment_form = CommentForm()
+
+    return render(request, 'main/comment.html', {'post_info': post_info, 'comments': comments,
+                                                 'comment_form': comment_form})
 

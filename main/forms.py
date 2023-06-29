@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm, Textarea
-from .models import Post
+from .models import Post, Comment
 
 
 class CreateUserForm(UserCreationForm):
@@ -24,3 +24,9 @@ class PostForm(ModelForm):
             'spacename': forms.HiddenInput(),
             'body': Textarea(attrs={'cols': 80, 'rows': 20})
         }
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['post', 'comment', 'parent_comment', 'username']

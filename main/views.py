@@ -86,25 +86,13 @@ def create_space(request):
 
 # still Need to update UserFollowedSpace
 def space(request, spacename):
-
-    if request.method == 'POST':
-
-        try:
-            followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
-            followed_space.delete()
-            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
-        except UserFollowedSpace.DoesNotExist:
-            request.user.userfollowedspace_set.create(spacename=spacename)
-            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True'})
-    else:
-
-        try:
-            followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
-            space_posts = Post.objects.filter(spacename=spacename)
-            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True',
-                                                       'space_posts': space_posts})
-        except UserFollowedSpace.DoesNotExist:
-            return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
+    try:
+        followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
+        space_posts = Post.objects.filter(spacename=spacename)
+        return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True',
+                                                    'space_posts': space_posts})
+    except UserFollowedSpace.DoesNotExist:
+        return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
 
 
 def post(request, spacename):
@@ -116,7 +104,7 @@ def post(request, spacename):
         except Post.DoesNotExist:
             request.user.post_set.create(title=request.POST['title'], spacename=spacename,
                                          url=request.POST['url'], body=request.POST['body'])
-            return render(request, 'main/space.html', {'spacename': spacename})
+            return redirect('main:space', spacename)
 
     form = PostForm()
     return render(request, 'main/post.html', {'form': form, 'spacename': spacename})
@@ -128,14 +116,7 @@ def post_comments(request, spacename, post_title):
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
-
-            post_info = Post.objects.get(title=post_title)
-            comments = post_info.comment_set.all()
-
-            comment_form = CommentForm()
-
-            return render(request, 'main/comment.html',
-                          {'post_info': post_info, 'comments': comments, 'comment_form': comment_form})
+            return redirect('main:post_comments', spacename, post_title)
 
     post_info = Post.objects.get(title=post_title)
     comments = post_info.comment_set.all()

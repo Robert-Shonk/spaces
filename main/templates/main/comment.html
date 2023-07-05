@@ -34,8 +34,17 @@
 
 </div>
 <h3>Comments</h3>
+<ul class="list-group">
 {% for comment in comments %}
-    {{ comment.comment }} <br>
+    <li class="list-group-item">
+        User: {{ comment.username }}<br>
+        {{ comment.comment }}<br>
+
+        <a href="">reply</a><br>
+    </li>
+
 {% endfor %}
+</ul>
+
 </body>
 </html>

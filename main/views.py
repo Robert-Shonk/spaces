@@ -9,7 +9,11 @@ import datetime
 
 # Create your views here.
 def index(request):
-    return render(request, 'main/index.html', {})
+    if request.user.is_authenticated:
+        base_template = "./loggedin_base.html"
+    else:
+        base_template = "./base.html"
+    return render(request, 'main/index.html', {'base_template': base_template})
 
 
 def login_user(request):
@@ -86,13 +90,32 @@ def create_space(request):
 
 # still Need to update UserFollowedSpace
 def space(request, spacename):
+
+    if request.method == 'POST':
+        follow_status = request.POST['followed']
+        if follow_status == 'False':
+            try:
+                followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
+                followed_space.delete()
+                return redirect('main:space', spacename)
+            except UserFollowedSpace.DoesNotExist:
+                pass
+        else:
+            try:
+                followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
+            except UserFollowedSpace.DoesNotExist:
+                request.user.userfollowedspace_set.create(spacename=spacename)
+                return redirect('main:space', spacename)
+
+    space_posts = Post.objects.filter(spacename=spacename)
+
     try:
         followed_space = request.user.userfollowedspace_set.get(spacename=spacename)
-        space_posts = Post.objects.filter(spacename=spacename)
-        return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'True',
-                                                    'space_posts': space_posts})
+        followed = 'True'
     except UserFollowedSpace.DoesNotExist:
-        return render(request, 'main/space.html', {'spacename': spacename, 'followed': 'False'})
+        followed = 'False'
+
+    return render(request, 'main/space.html', {'spacename': spacename, 'followed': followed, 'space_posts': space_posts})
 
 
 def post(request, spacename):

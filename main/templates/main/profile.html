@@ -1,3 +1,4 @@
+{% extends "./loggedin_base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
 <body>
 
 <div class="container">
-
+{% block content %}
     <div class="row">
 
         <div class="col">
@@ -19,7 +20,6 @@
 
         </div>
         <div class="col">
-            <a href="{% url 'main:logout_user' %}">Log out</a>|
             <a href="{% url 'main:create_space' %}">Create a space here!</a>
         </div>
 
@@ -43,6 +43,7 @@
             </ul>
         </div>
     </div>
+{% endblock %}
 </div>
 
 </body>

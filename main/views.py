@@ -136,10 +136,11 @@ def post(request, spacename):
 def post_comments(request, spacename, post_title):
 
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('main:post_comments', spacename, post_title)
+        comment = request.POST['comment']
+        username = request.user
+        post_info = Post.objects.get(title=post_title)
+        post_info.comment_set.create(comment=comment, username=username)
+        return redirect('main:post_comments', spacename, post_title)
 
     post_info = Post.objects.get(title=post_title)
     comments = post_info.comment_set.all()

@@ -1,1 +1,1 @@
-Reddit-like personal project using the Django framework and Bootstrap5
+Social media app  personal project using the Django framework and Bootstrap5

@@ -48,6 +48,13 @@
                     <li class="list-group-item">
                         <a href="{% url 'main:post_comments' post.spacename post.title %}">{{ post.title }}</a> <br>
                         Posted by {{ post.user }} on {{ post.date_published }} - Upvotes: {{ post.upvotes }}
+
+                        {% if request.user == post.user %}
+                            <form method="POST" action="{% url 'main:delete_post' post.spacename post.title %}">
+                                {% csrf_token %}
+                                <input type="submit" value="Delete">
+                            </form>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>

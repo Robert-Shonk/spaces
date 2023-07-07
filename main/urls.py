@@ -14,5 +14,6 @@ urlpatterns = [
     path('space/<str:spacename>/', views.space, name='space'),
     path('space/<str:spacename>/post/', views.post, name='post'),
     path('space/<str:spacename>/comments/<str:post_title>/', views.post_comments, name='post_comments'),
+    path('space/<str:spacename>/post/delete_post/<str:post_title>/', views.delete_post, name='delete_post'),
 ]
 

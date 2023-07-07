@@ -150,3 +150,17 @@ def post_comments(request, spacename, post_title):
     return render(request, 'main/comment.html', {'post_info': post_info, 'comments': comments,
                                                  'comment_form': comment_form})
 
+
+def delete_post(request, spacename, post_title):
+
+    if request.method == 'POST':
+
+        try:
+            post = Post.objects.get(title=post_title)
+            post.delete()
+            return redirect('main:space', spacename)
+        except Post.DoesNotExist:
+            pass
+
+    return HttpResponse("hehe")
+

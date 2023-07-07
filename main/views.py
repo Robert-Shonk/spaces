@@ -164,3 +164,17 @@ def delete_post(request, spacename, post_title):
 
     return HttpResponse("hehe")
 
+
+def delete_comment(request, spacename, post_title, comment):
+
+    if request.method == 'POST':
+
+        try:
+            post = Post.objects.get(title=post_title)
+            del_comment = post.comment_set.get(comment=comment)
+            del_comment.delete()
+            return redirect('main:post_comments', spacename, post_title)
+        except Post.DoesNotExist:
+            pass
+    return HttpResponse("delete_comment")
+

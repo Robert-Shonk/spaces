@@ -1,4 +1,4 @@
-{% extends "./base.html" %}
+{% extends "./loggedin_base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,7 @@
 <div class="card">
   <div class="card-body">
     <h2>{{ post_info.title }}</h2>
+    Posted by: {{ post_info.user }} on {{ post_info.date_published }}<br>
     {% if post_info.url != "" %}
     <a href="{{ post_info.url }}">link</a>
     {% endif %}
@@ -49,6 +50,12 @@
         {{ comment.comment }}<br>
 
         <a href="">reply</a><br>
+        {% if request.user == post_info.username %}
+        <form method="POST" action="{% url 'main:delete_comment' post_info.spacename post_info.title comment.comment %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+        {% endif %}
     </li>
 
 {% endfor %}

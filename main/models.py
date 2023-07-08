@@ -35,6 +35,26 @@ class Post(models.Model):
         return self.title
 
 
+class PostUpvote(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    username = models.CharField(max_length=25)
+
+
+class PostDownvote(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    username = models.CharField(max_length=25)
+
+
+class PostFunny(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    username = models.CharField(max_length=25)
+
+
+class PostHelpful(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    username = models.CharField(max_length=25)
+
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.CharField(max_length=1000)

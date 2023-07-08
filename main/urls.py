@@ -16,5 +16,9 @@ urlpatterns = [
     path('space/<str:spacename>/comments/<str:post_title>/', views.post_comments, name='post_comments'),
     path('space/<str:spacename>/post/delete_post/<str:post_title>/', views.delete_post, name='delete_post'),
     path('space/<str:spacename>/comments/<str:post_title>/delete_comment/<str:comment>/', views.delete_comment, name='delete_comment'),
+    path('upvote/<str:post_title>/', views.upvote, name='upvote'),
+    path('downvote/<str:post_title>/', views.downvote, name='downvote'),
+    path('funny/<str:post_title>/', views.funny, name='funny'),
+    path('helpful/<str:post_title>/', views.helpful, name='helpful'),
 ]
 

@@ -178,3 +178,58 @@ def delete_comment(request, spacename, post_title, comment):
             pass
     return HttpResponse("delete_comment")
 
+
+def upvote(request, post_title):
+
+    if request.method == "POST":
+
+        try:
+            post = Post.objects.get(title=post_title)
+            post.upvotes += 1
+            post.save()
+            return redirect('main:post_comments', post.spacename, post_title)
+        except Post.DoesNotExist:
+            pass
+
+    return HttpResponse("upvote")
+
+
+def downvote(request, post_title):
+
+    if request.method == "POST":
+
+        try:
+            post = Post.objects.get(title=post_title)
+            post.downvotes += -1
+            post.save()
+            return redirect('main:post_comments', post.spacename, post_title)
+        except Post.DoesNotExist:
+            pass
+    return HttpResponse("downvote")
+
+
+def funny(request, post_title):
+    if request.method == "POST":
+
+        try:
+            post = Post.objects.get(title=post_title)
+            post.funny += 1
+            post.save()
+            return redirect('main:post_comments', post.spacename, post_title)
+        except Post.DoesNotExist:
+            pass
+    return HttpResponse("funny")
+
+
+def helpful(request, post_title):
+    if request.method == "POST":
+
+        try:
+            post = Post.objects.get(title=post_title)
+            post.helpful += 1
+            post.save()
+            return redirect('main:post_comments', post.spacename, post_title)
+        except Post.DoesNotExist:
+            pass
+    return HttpResponse("helpful")
+

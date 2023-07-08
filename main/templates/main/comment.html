@@ -18,7 +18,22 @@
     <a href="{{ post_info.url }}">link</a>
     {% endif %}
     <p>{{ post_info.body }}</p>
-    Upvotes: {{ post_info.upvotes }} - Helpful: {{ post_info.helpful }} - Funny {{ post_info.funny }}
+    <form method="POST" action="{% url 'main:upvote' post_info.title %}">
+        {% csrf_token %}
+        <input type="submit" value="Upvote"> {{ post_info.upvotes }}
+    </form>
+    <form method="POST" action="{% url 'main:downvote' post_info.title %}">
+        {% csrf_token %}
+        <input type="submit" value="Downvotes"> {{ post_info.downvotes }}
+    </form>
+    <form method="POST" action="{% url 'main:funny' post_info.title %}">
+        {% csrf_token %}
+        <input type="submit" value="Funny"> {{ post_info.funny }}
+    </form>
+    <form method="POST" action="{% url 'main:helpful' post_info.title %}">
+        {% csrf_token %}
+        <input type="submit" value="Helpful"> {{ post_info.helpful }}
+    </form>
   </div>
 </div>
 
